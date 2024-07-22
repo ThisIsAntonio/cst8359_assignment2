@@ -1,0 +1,7 @@
+.bin/
+.obj/
+**/obj/
+**/bin/
+.vs/
+assignment2/appsettings.json
+assignment2/appsettings.Development.json
