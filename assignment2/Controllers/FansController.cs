@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assignment2.Data;
 using Assignment2.Models;
+using Assignment2.Models.ViewModels;
 
 namespace Assignment2.Controllers
 {
@@ -20,9 +21,30 @@ namespace Assignment2.Controllers
         }
 
         // GET: Fans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.Fans.ToListAsync());
+            var viewModel = new NewsViewModel
+            {
+                Fans = await _context.Fans.ToListAsync(),
+                SportClubs = await _context.SportClubs.ToListAsync(),
+                Subscriptions = await _context.Subscriptions.ToListAsync()
+            };
+
+            if (id.HasValue)
+            {
+                var selectedFan = await _context.Fans
+                    .Include(f => f.Subscriptions)
+                    .ThenInclude(s => s.SportClub)
+                    .FirstOrDefaultAsync(f => f.Id == id.Value);
+
+                if (selectedFan != null)
+                {
+                    var selectedClubs = selectedFan.Subscriptions.Select(s => s.SportClub).ToList();
+                    ViewData["SelectedClubs"] = selectedClubs;
+                }
+            }
+
+            return View(viewModel);
         }
 
         // GET: Fans/Details/5
@@ -42,6 +64,40 @@ namespace Assignment2.Controllers
 
             return View(fan);
         }
+
+
+        // GET: Fans/Select/5
+        [HttpGet("Select/{id}")]
+        public async Task<IActionResult> Select(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fan = await _context.Fans
+                .Include(f => f.Subscriptions)
+                .ThenInclude(s => s.SportClub)
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (fan == null)
+            {
+                return NotFound();
+            }
+
+            var selectedClubs = fan.Subscriptions.Select(s => s.SportClub).ToList();
+            ViewData["SelectedClubs"] = selectedClubs;
+
+            var viewModel = new NewsViewModel
+            {
+                Fans = await _context.Fans.ToListAsync(),
+                SportClubs = await _context.SportClubs.ToListAsync(),
+                Subscriptions = await _context.Subscriptions.ToListAsync()
+            };
+
+            return View("Index", viewModel);
+        }
+
 
         // GET: Fans/Create
         public IActionResult Create()

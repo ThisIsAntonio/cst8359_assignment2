@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Assignment2.Models.SportClub>
+﻿@model Assignment2.Models.ViewModels.NewsViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sport Clubs";
 }
 
 <h1>Index</h1>
@@ -13,16 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.SportClubs.First().Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fee)
+                @Html.DisplayNameFor(model => model.SportClubs.First().Fee)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.SportClubs) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -31,6 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Fee)
             </td>
             <td>
+                <a asp-action="Select" asp-route-id="@item.Id">Select</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -39,3 +40,41 @@
 }
     </tbody>
 </table>
+
+@if (ViewData["SelectedFans"] != null)
+{
+    var selectedFans = ViewData["SelectedFans"] as List<Assignment2.Models.Fan>;
+    if (selectedFans?.Count > 0)
+    {
+        <h2>Subscribers to the SportClubs</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => selectedFans.First().LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => selectedFans.First().FirstName)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fan in selectedFans)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => fan.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => fan.FirstName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2>No fans subscribed to this club.</h2>
+    }
+}

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Assignment2.Models.Fan>
+﻿@model Assignment2.Models.ViewModels.NewsViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.Fans.First().LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.Fans.First().FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
+                @Html.DisplayNameFor(model => model.Fans.First().BirthDate)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Fans) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
@@ -37,6 +37,7 @@
                 @Html.DisplayFor(modelItem => item.BirthDate)
             </td>
             <td>
+                <a asp-action="Select" asp-route-id="@item.Id">Select</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -45,3 +46,41 @@
 }
     </tbody>
 </table>
+
+@if (ViewData["SelectedClubs"] != null)
+{
+    var selectedClubs = ViewData["SelectedClubs"] as List<Assignment2.Models.SportClub>;
+    if (selectedClubs?.Count > 0)
+    {
+        <h2>Subscribed Sport Clubs</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => selectedClubs.First().Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => selectedClubs.First().Fee)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var club in selectedClubs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => club.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => club.Fee)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2>No sport clubs subscribed by this fan.</h2>
+    }
+}
