@@ -1,4 +1,4 @@
-using assignment2.Data;
+using Assignment2.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace assignment2

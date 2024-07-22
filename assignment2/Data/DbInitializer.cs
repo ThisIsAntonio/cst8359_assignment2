@@ -1,4 +1,4 @@
-﻿namespace assignment2.Data
+﻿namespace Assignment2.Data
 {
     public class DbInitializer
     {
