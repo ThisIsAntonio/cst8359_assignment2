@@ -1,7 +1,13 @@
 using Assignment2.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using System;
 
-namespace assignment2
+namespace Assignment2
 {
     public class Program
     {

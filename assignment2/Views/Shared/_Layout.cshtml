@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lab 5</title>
+    <link rel="stylesheet" type="text/css" href="~/css/StyleSheet.css" />
+</head>
+<body>
+    <header>
+        <h1>@ViewData["Title"]</h1>
+        <nav>
+            @Html.ActionLink("Home", "Index", "Home")
+            @Html.ActionLink("Fans", "Index", "Fans")
+            @Html.ActionLink("Sport Clubs", "Index", "SportClubs")
+        </nav>
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="footer-content">
+            <p>
+                Developed by Marcos Astudillo for CST8359 Lab 5   Student ID: 041057439   astu0002@algonquinlive.com  &copy; @DateTime.Now.Year - Lab 5
+            </p>
+        </div>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
