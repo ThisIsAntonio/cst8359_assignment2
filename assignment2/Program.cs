@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
+using Azure.Storage.Blobs;
 
 namespace Assignment2
 {
@@ -19,6 +20,11 @@ namespace Assignment2
             builder.Services.AddControllersWithViews();
             var connection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<SportsDbContext>(options => options.UseSqlServer(connection));
+
+            // Register BlobServiceClient
+            var blobServiceClient = new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage"));
+            builder.Services.AddSingleton(blobServiceClient);
+
             builder.Services.AddSession();
             var app = builder.Build();
 

@@ -9,16 +9,19 @@ using Assignment2.Data;
 using Assignment2.Models;
 using Assignment2.Models.ViewModels;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace Assignment2.Controllers
 {
     public class SportClubsController : Controller
     {
         private readonly SportsDbContext _context;
+        private readonly ILogger<SportClubsController> _logger;
 
-        public SportClubsController(SportsDbContext context)
+        public SportClubsController(SportsDbContext context, ILogger<SportClubsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: SportClubs
@@ -42,6 +45,14 @@ namespace Assignment2.Controllers
             }
 
             return View(viewModel);
+        }
+
+        // GET: SportClubs/News/5
+        [HttpGet]
+        public Task<IActionResult> News(string id)
+        {
+            _logger.LogInformation("Redirecting to News Index with sportClubId: {SportClubId}", id);
+            return Task.FromResult<IActionResult>(RedirectToAction("Index", "News", new { sportClubId = id }));
         }
 
         // GET: SportClubs/Details/5
@@ -201,5 +212,6 @@ namespace Assignment2.Controllers
         {
             return _context.SportClubs.Any(e => e.Id == id);
         }
+
     }
 }

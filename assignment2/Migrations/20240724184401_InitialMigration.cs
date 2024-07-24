@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Assignment2.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,27 @@ namespace Assignment2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "News",
+                columns: table => new
+                {
+                    NewsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SportClubId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_News", x => x.NewsId);
+                    table.ForeignKey(
+                        name: "FK_News_SportClub_SportClubId",
+                        column: x => x.SportClubId,
+                        principalTable: "SportClub",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscription",
                 columns: table => new
                 {
@@ -64,6 +85,11 @@ namespace Assignment2.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_News_SportClubId",
+                table: "News",
+                column: "SportClubId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subscription_SportClubId",
                 table: "Subscription",
                 column: "SportClubId");
@@ -72,6 +98,9 @@ namespace Assignment2.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "News");
+
             migrationBuilder.DropTable(
                 name: "Subscription");
 

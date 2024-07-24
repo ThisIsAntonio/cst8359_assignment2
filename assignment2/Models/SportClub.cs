@@ -21,5 +21,8 @@ namespace Assignment2.Models
 
         // Navigation property
         public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+
+        // Navigation property for news
+        public ICollection<News> News { get; set; }  = new List<News>();
     }
 }

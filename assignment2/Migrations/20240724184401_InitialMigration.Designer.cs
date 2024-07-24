@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment2.Migrations
 {
     [DbContext(typeof(SportsDbContext))]
-    [Migration("20240722183458_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240724184401_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,34 @@ namespace Assignment2.Migrations
                     b.ToTable("Fan", (string)null);
                 });
 
+            modelBuilder.Entity("Assignment2.Models.News", b =>
+                {
+                    b.Property<int>("NewsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NewsId"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SportClubId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NewsId");
+
+                    b.HasIndex("SportClubId");
+
+                    b.ToTable("News", (string)null);
+                });
+
             modelBuilder.Entity("Assignment2.Models.SportClub", b =>
                 {
                     b.Property<string>("Id")
@@ -86,6 +114,17 @@ namespace Assignment2.Migrations
                     b.ToTable("Subscription", (string)null);
                 });
 
+            modelBuilder.Entity("Assignment2.Models.News", b =>
+                {
+                    b.HasOne("Assignment2.Models.SportClub", "SportClub")
+                        .WithMany("News")
+                        .HasForeignKey("SportClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SportClub");
+                });
+
             modelBuilder.Entity("Assignment2.Models.Subscription", b =>
                 {
                     b.HasOne("Assignment2.Models.Fan", "Fan")
@@ -112,6 +151,8 @@ namespace Assignment2.Migrations
 
             modelBuilder.Entity("Assignment2.Models.SportClub", b =>
                 {
+                    b.Navigation("News");
+
                     b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
