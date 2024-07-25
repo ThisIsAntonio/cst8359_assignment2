@@ -4,14 +4,14 @@
     ViewData["Title"] = "News";
 }
 
-<h1>News Table</h1>
+<h1>News List</h1>
 <hr />
 <table class="table" >
     <tbody>
         <tr>
             <td style="text-align: center; border-style: none">
                 <p>
-                    <a asp-action="Create" asp-route-sportClubId="@ViewData["SportClubId"]">Upload New</a>
+                    <a asp-action="Create" asp-route-sportClubId="@ViewData["SportClubId"]">Upload News</a>
                 </p>
             </td>
             <td style="text-align: center; border-style: none">
@@ -43,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
                 <td>
-                    <img src="@item.Url" alt="@item.FileName" class="prediction-image" />
+                    <img src="@item.Url" alt="@item.FileName" class="news-image" style="height: 150px" />
                 </td>
                 <td>
                     <a asp-action="Delete" asp-route-id="@item.NewsId">Delete</a>

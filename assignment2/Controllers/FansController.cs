@@ -205,7 +205,58 @@ namespace Assignment2.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FanExists(int id)
+        // GET: Fans/EditSubscriptions/5
+        public async Task<IActionResult> EditSubscriptions(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fan = await _context.Fans
+                .Include(f => f.Subscriptions)
+                .ThenInclude(s => s.SportClub)
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (fan == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new NewsViewModel
+            {
+                Fans = new List<Fan> { fan },
+                SportClubs = await _context.SportClubs.ToListAsync(),
+                Subscriptions = fan.Subscriptions
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Fans/UpdateSubscription
+        [HttpPost]
+        public async Task<IActionResult> UpdateSubscription(int fanId, string sportClubId)
+        {
+            var subscription = await _context.Subscriptions
+                .FirstOrDefaultAsync(s => s.FanId == fanId && s.SportClubId == sportClubId);
+
+            if (subscription == null)
+            {
+                // If not subscribed, add the subscription
+                subscription = new Subscription { FanId = fanId, SportClubId = sportClubId };
+                _context.Subscriptions.Add(subscription);
+            }
+            else
+            {
+                // If already subscribed, remove the subscription
+                _context.Subscriptions.Remove(subscription);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(EditSubscriptions), new { id = fanId });
+        }
+
+    private bool FanExists(int id)
         {
             return _context.Fans.Any(e => e.Id == id);
         }

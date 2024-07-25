@@ -147,3 +147,10 @@ dd {
         align-items: center;
         width: 100%;
     }
+
+.news-image {
+    width: auto;
+    height: 150px;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
