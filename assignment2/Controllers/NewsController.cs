@@ -84,7 +84,7 @@ namespace Assignment2.Controllers
                     await blobContainerClient.CreateIfNotExistsAsync();
 
                     // Generate a random filename
-                    var randomFileName = GenerateRandomFileName(10, 15) + ".jpg";
+                    var randomFileName = GenerateRandomFileName(10, 15) + "." + GenerateRandomFileName(3, 4);
                     var blobClient = blobContainerClient.GetBlobClient(randomFileName);
                     _logger.LogInformation("Uploading file {FileName} to blob container {ContainerName}", randomFileName, containerName);
 
