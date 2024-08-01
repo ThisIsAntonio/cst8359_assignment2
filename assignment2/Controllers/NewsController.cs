@@ -10,6 +10,7 @@ using Azure.Storage.Blobs;
 using Assignment2.Data;
 using Assignment2.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Azure.Storage.Blobs.Models;
 
 namespace Assignment2.Controllers
 {
@@ -81,7 +82,7 @@ namespace Assignment2.Controllers
                     }
 
                     var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-                    await blobContainerClient.CreateIfNotExistsAsync();
+                    await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer); // Create container with public access
 
                     // Generate a random filename
                     var randomFileName = GenerateRandomFileName(10, 15) + "." + GenerateRandomFileName(3, 4);
