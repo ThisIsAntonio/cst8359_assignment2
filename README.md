@@ -1,0 +1,2 @@
+# Assignment 2 – Fan Clubs
+This assignment builds upon techniques learned in the previous labs (please reffer lab 5 and 6) and involves creating a web application for managing fan clubs. The task requires implementing features like CRUD operations for fan clubs, managing subscriptions, and uploading news related to sports clubs. The assignment also involves deploying the application to Azure and documenting the work through a recorded video demonstration.
